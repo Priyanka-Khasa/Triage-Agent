@@ -51,7 +51,7 @@ def main():
         print("\nStep 2/8: Running sample evaluation...")
         eval_metrics = run_evaluation(data_dir, sample_csv, sample_eval_report_path)
 
-    use_llm = not args.no_llm and (os.environ.get('GROQ_API_KEY') or os.environ.get('OPENAI_API_KEY'))
+    use_llm = not args.no_llm and bool(os.environ.get('GROQ_API_KEY') or os.environ.get('GROQ_API_KEY_2'))
 
     if use_llm:
         print("\nStep 3/8: Initializing LLM-powered triage pipeline (Groq/Llama 3.3 70B)...")
