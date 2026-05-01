@@ -1057,7 +1057,7 @@
                         </div>
                     </div>
                     <div class="filter-actions">
-                        <button type="button" onclick="setStatusFilter('all')">Reset filters</button>
+                        <button type="button" onclick="resetAllFilters()">Reset filters</button>
                         <span id="filter-state">Showing all tickets</span>
                     </div>
                 </section>
@@ -1212,13 +1212,13 @@
 
             const companies = ['all', ...new Set(allTickets.map(ticket => safeValue(ticket.company)))].filter(Boolean);
             document.getElementById('company-filter').innerHTML = companies.map(company => `
-                <option value="${company}">${company === 'all' ? 'All companies' : company}</option>
+                <option value="${escapeHtml(company)}">${company === 'all' ? 'All companies' : escapeHtml(company)}</option>
             `).join('');
             document.getElementById('company-filter').value = currentCompanyFilter;
 
             const requestTypes = ['all', ...new Set(allTickets.map(ticket => ticket.request_type || 'product_issue'))];
             document.getElementById('request-filter').innerHTML = requestTypes.map(type => `
-                <option value="${type}">${requestTypeMap[type]?.label || type}</option>
+                <option value="${escapeHtml(type)}">${requestTypeMap[type]?.label || escapeHtml(type)}</option>
             `).join('');
             document.getElementById('request-filter').value = currentRequestFilter;
 
@@ -1228,6 +1228,15 @@
 
         function setStatusFilter(key) {
             currentStatusFilter = key;
+            renderFilterOptions();
+            renderTickets();
+        }
+
+        function resetAllFilters() {
+            currentStatusFilter = 'all';
+            currentCompanyFilter = 'all';
+            currentRequestFilter = 'all';
+            document.getElementById('search-input').value = '';
             renderFilterOptions();
             renderTickets();
         }
