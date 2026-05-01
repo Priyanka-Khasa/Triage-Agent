@@ -148,11 +148,19 @@ def main():
     audit_df.to_csv(audit_trace_path, index=False)
     print(f"  [OK] {audit_trace_path}")
 
-    print(f"Step 7/8: Finalizing execution log...")
+    print("Step 7/8: Finalizing execution log...")
     print(f"  [OK] {execution_log_path}")
 
+    # 9. Update Dashboard
+    print("\nStep 8/9: Synchronizing Dashboard...")
+    try:
+        from update_dashboard import update_dashboard
+        update_dashboard()
+    except Exception as e:
+        print(f"  [Warning] Could not update dashboard: {e}")
+
     # 8. Print final summary
-    print("\nStep 8/8: Final Summary")
+    print("\nStep 9/9: Final Summary")
     print("=" * 60)
     print(f"Tickets Processed: {len(df)}")
     print(f"Escalation Rate:   {sum(1 for r in output_rows if r['status'] == 'escalated') / len(df) * 100:.1f}%")
