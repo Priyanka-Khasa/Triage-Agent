@@ -1,0 +1,49 @@
+======================================================================
+CORPUS COVERAGE ANALYSIS REPORT
+======================================================================
+
+1. OVERALL CORPUS STATISTICS
+----------------------------------------------------------------------
+Total Documents: 773
+Total Chunks: 6324
+Average Chunks per Document: 8.2
+
+2. COVERAGE BY DOMAIN
+----------------------------------------------------------------------
+
+HackerRank      ✓ COVERED      
+  Documents:  438  ( 56.7% of total)
+  Chunks:    4142
+
+Claude          ✓ COVERED      
+  Documents:  321  ( 41.5% of total)
+  Chunks:    2121
+
+Visa            ✓ COVERED      
+  Documents:   14  (  1.8% of total)
+  Chunks:      61
+
+3. COVERAGE ISSUES AND WARNINGS
+----------------------------------------------------------------------
+
+✓ All supported domains have corpus coverage.
+
+⚠ WEAK COVERAGE WARNING:
+  • Visa: Only 1.8% of corpus documents
+    Action: Escalation rates may be higher for these domains.
+
+4. ESCALATION POLICY
+----------------------------------------------------------------------
+During ticket processing:
+  • If ticket domain has NO corpus coverage, ticket is ESCALATED.
+  • If ticket domain has WEAK coverage, escalation rate may increase.
+  • If ticket domain has adequate coverage, normal triage rules apply.
+
+5. RECOMMENDATIONS
+----------------------------------------------------------------------
+  • Corpus coverage is complete for all supported domains.
+  • Consider expanding Visa documentation (1.8% coverage).
+
+======================================================================
+END OF REPORT
+======================================================================
