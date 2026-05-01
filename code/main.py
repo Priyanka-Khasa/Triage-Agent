@@ -1,8 +1,10 @@
 import os
 import argparse
 import pandas as pd
+from dotenv import load_dotenv
 
 from agent import TriageAgent
+from llm_agent import LLMTriageAgent
 from corpus_analyzer import generate_corpus_report
 from eval import run_evaluation
 
@@ -10,7 +12,13 @@ from eval import run_evaluation
 def main():
     parser = argparse.ArgumentParser(description="Support Triage Agent CLI")
     parser.add_argument("--judge-mode", action="store_true", help="Run in judge validation mode")
+    parser.add_argument("--no-llm", action="store_true", help="Disable LLM and use rule-based agent only")
     args = parser.parse_args()
+
+    # Load .env file for API keys
+    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+    if os.path.exists(env_path):
+        load_dotenv(env_path)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     data_dir = os.path.join(base_dir, "data")
@@ -43,8 +51,14 @@ def main():
         print("\nStep 2/8: Running sample evaluation...")
         eval_metrics = run_evaluation(data_dir, sample_csv, sample_eval_report_path)
 
-    print("\nStep 3/8: Initializing multi-agent triage pipeline...")
-    agent = TriageAgent(data_dir=data_dir, retrieval_threshold=0.15, corpus_analyzer=corpus_analyzer)
+    use_llm = not args.no_llm and bool(os.environ.get('GROQ_API_KEY') or os.environ.get('GROQ_API_KEY_2'))
+
+    if use_llm:
+        print("\nStep 3/8: Initializing LLM-powered triage pipeline (Groq/Llama 3.3 70B)...")
+        agent = LLMTriageAgent(data_dir=data_dir, corpus_analyzer=corpus_analyzer)
+    else:
+        print("\nStep 3/8: Initializing rule-based triage pipeline...")
+        agent = TriageAgent(data_dir=data_dir, retrieval_threshold=0.15, corpus_analyzer=corpus_analyzer)
 
     # 3. Run final support_tickets.csv
     print(f"\nStep 4/8: Processing {os.path.basename(input_csv)}...")
