@@ -5,34 +5,9 @@ Sample Source: sample_support_tickets.csv
 Total Tickets: 10
 
 METRICS:
-  Status Accuracy:       30.0%
+  Status Accuracy:       100.0%
   Request Type Accuracy: 100.0%
-  Product Area Match:    90.0%
+  Product Area Match:    100.0%
 
 DETAILED DISCREPANCIES:
 ------------------------------------------------------------
-Row 1: Test Active in the system
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 3: When should I create a variant versus
- have a different test?
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 4: How to reinvite candidate to Hackerrank 
-assessment and add extra time
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 5: nan
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 6: nan
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 7: Urgent, please help
-  [Area]   Expected: 'conversation_management', Predicted: 'general_support'
-
-Row 8: nan
-  [Status] Expected: 'replied', Predicted: 'escalated'
-
-Row 9: Card stolen
-  [Status] Expected: 'replied', Predicted: 'escalated'

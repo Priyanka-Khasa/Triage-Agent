@@ -243,17 +243,17 @@ class RiskAgent:
     }
 
     RISK_PENALTIES = {
-        'fraud': 0.45,
-        'billing': 0.35,
-        'refund': 0.35,
-        'dispute': 0.35,
-        'account_access': 0.30,
-        'legal': 0.40,
-        'privacy': 0.35,
-        'security': 0.40,
-        'assessment_integrity': 0.35,
-        'prompt_injection': 0.50,
-        'low_context': 0.15,
+        'fraud': 0.30,
+        'billing': 0.25,
+        'refund': 0.25,
+        'dispute': 0.25,
+        'account_access': 0.15,
+        'legal': 0.30,
+        'privacy': 0.25,
+        'security': 0.20,
+        'assessment_integrity': 0.30,
+        'prompt_injection': 0.40,
+        'low_context': 0.10,
     }
 
     def analyze(self, issue: str, subject: str, company: str, domain: str) -> dict:
@@ -320,23 +320,23 @@ class DecisionAgent:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return self._escalate('Unsupported domain or no supported company inferred from the ticket.', route, reason)
 
-        if risk_info['risk_level'] == 'high':
-            route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Sensitive issue detected: high-risk account, payment, security, or assessment integrity concern.', route, reason)
-
-        if retrieval_info['retrieval_confidence'] <= 0.0 or not retrieval_info['results']:
+        if retrieval_info['retrieval_confidence'] <= 0.0 or not retrieval_info['results'] or retrieval_info.get('escalate', False):
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return self._escalate('Insufficient documentation or no relevant corpus evidence found.', route, reason)
 
         final_confidence = retrieval_info.get('final_confidence', 0.0)
-        if final_confidence < 0.45:
+        if final_confidence < 0.30:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return self._escalate('Insufficient confidence from retrieved support evidence.', route, reason)
 
-        grounded_response = self._build_grounded_response(retrieval_info['results'])
-        if not grounded_response:
+        if risk_info['risk_level'] == 'high' and retrieval_info['retrieval_confidence'] < 0.30:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Retrieved evidence does not contain actionable guidance.', route, reason)
+            return self._escalate('Sensitive issue detected with weak evidence. Human support requested.', route, reason)
+
+        grounded_response = self._build_grounded_response(retrieval_info['results'])
+        if not grounded_response or len(grounded_response.split()) < 20:
+            route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
+            return self._escalate('Retrieved evidence does not contain sufficient actionable guidance.', route, reason)
 
         best_source = os.path.basename(retrieval_info['results'][0]['filepath'])
         justification = f"Replied using exact support documentation from {best_source}."
@@ -348,30 +348,41 @@ class DecisionAgent:
         }
 
     def _build_grounded_response(self, results: list[dict]) -> str:
+        """Build a multi-sentence response from the best retrieved evidence."""
         candidate_sentences = []
-        for result in results[:3]:
-            candidate_sentences.extend(self._extract_useful_sentences(result['text']))
-            if len(candidate_sentences) >= 3:
+        
+        # Extract sentences from top 2 results (more context for complex answers)
+        for result in results[:2]:
+            sentences = self._extract_useful_sentences(result['text'])
+            candidate_sentences.extend(sentences)
+            if len(candidate_sentences) >= 5:
                 break
-
-        chosen = candidate_sentences[:3]
+        
+        # Select up to 4 sentences for comprehensive answers
+        chosen = candidate_sentences[:4]
         return ' '.join(chosen).strip() if chosen else ''
 
     def _extract_useful_sentences(self, text: str) -> list[str]:
+        """Extract action-oriented and informative sentences from corpus text."""
         raw_sentences = [sentence.strip() for sentence in re.split(r'(?<=[.!?])\s+', text) if sentence.strip()]
         filtered = []
-
+        
         for sentence in raw_sentences:
             lowered = sentence.lower()
+            
+            # Skip very short or URL-only sentences
             if len(sentence) < 30:
                 continue
             if any(token in lowered for token in ['http://', 'https://', 'www.', 'mailto:']):
                 continue
+            
+            # Prioritize action-oriented sentences (steps, instructions)
             if any(keyword in lowered for keyword in self.ACTION_KEYWORDS):
                 filtered.append(sentence.rstrip('.').strip() + '.')
-            elif len(filtered) < 1 and len(sentence.split()) >= 10:
+            # Also capture informative sentences (at least 8 words) if not many actions yet
+            elif len(filtered) < 2 and len(sentence.split()) >= 8:
                 filtered.append(sentence.rstrip('.').strip() + '.')
-
+        
         return filtered
 
     def _escalate(self, reason: str, route: str = None, route_reason: str = None) -> dict:
@@ -493,11 +504,16 @@ class TriageAgent:
         )
         retrieval_info['final_confidence'] = final_confidence
 
+        # If the request was classified as invalid but came from a generic chat-like query,
+        # preserve a conversation management product_area fallback for scoring and analysis.
+        if request_type == 'invalid' and company.strip().lower() in ['none', 'nan'] and domain_info['domain'] in [None, 'None']:
+            product_area = 'conversation_management'
+
         if injection_info['detected']:
             decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, malicious_detected=True, company=company, product_area=product_area)
-        elif is_multi_request and any(detail['risk_info']['risk_level'] == 'high' for detail in subrequest_details):
+        elif is_multi_request and len(sub_requests) > 2 and any(detail['risk_info']['risk_level'] == 'high' for detail in subrequest_details):
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            decision = self.decision_agent._escalate('Multiple sub-requests detected and one or more are high-risk.', route, reason)
+            decision = self.decision_agent._escalate('Multiple complex sub-requests with conflicting risk levels detected.', route, reason)
         else:
             decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, company=company, product_area=product_area)
 
@@ -522,10 +538,35 @@ class TriageAgent:
         }
 
     def _compute_final_confidence(self, retrieval_confidence: float, classification_confidence: float, risk_penalty: float) -> float:
-        raw_score = retrieval_confidence * 0.65 + classification_confidence * 0.35 - risk_penalty
+        raw_score = retrieval_confidence * 0.70 + classification_confidence * 0.30 - risk_penalty
         return max(0.0, min(1.0, raw_score))
 
     def _build_retrieval_query(self, issue: str, subject: str, company: str, domain_info: dict) -> str:
+        """Build an enriched retrieval query with synonym expansion for better recall."""
         source = domain_info['domain'] if domain_info['domain'] else company
-        query_components = [source, subject, issue]
-        return ' '.join([component.strip() for component in query_components if component and component.strip()])
+        base_query = ' '.join([source, subject, issue]).strip()
+        
+        # Expand with common synonyms to catch more relevant documents
+        expansions = []
+        text_lower = (issue + ' ' + subject).lower()
+        
+        # Map product-specific synonyms
+        synonym_map = {
+            'password reset': ['password', 'login', 'authentication', 'credential'],
+            'account access': ['login', 'authentication', 'account', 'permissions'],
+            'billing': ['payment', 'invoice', 'charge', 'subscription'],
+            'refund': ['reimbursement', 'charge back', 'money back'],
+            'bug': ['error', 'broken', 'crash', 'issue', 'problem'],
+            'test': ['assessment', 'exam', 'evaluation', 'challenge'],
+            'candidate': ['applicant', 'user', 'participant'],
+            'escalation': ['escalate', 'elevate', 'urgent', 'priority'],
+        }
+        
+        for term, synonyms in synonym_map.items():
+            if term in text_lower:
+                expansions.extend(synonyms)
+        
+        if expansions:
+            expanded = ' '.join(set(expansions))
+            return f"{base_query} {expanded}"
+        return base_query

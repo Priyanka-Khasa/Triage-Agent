@@ -43,13 +43,13 @@
             margin: 0;
             padding: 0;
             scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
 
-        *::-webkit-scrollbar { width: 6px; }
+        *::-webkit-scrollbar { width: 8px; }
         *::-webkit-scrollbar-track { background: transparent; }
-        *::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        *::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        *::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+        *::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         body {
             background-color: var(--bg-base);
@@ -337,12 +337,13 @@
         /* --- Details Panel --- */
         .inspector-panel {
             position: sticky;
-            top: 0;
+            top: 2rem;
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 2rem;
-            min-height: calc(100vh - 200px);
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
