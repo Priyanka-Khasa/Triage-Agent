@@ -359,6 +359,20 @@ class LLMTriageAgent:
                 justification='Replied: invalid or out-of-scope request detected.'
             )
 
+        if risk_info.get('risk_level') == 'high':
+            route, reason = self.escalation_router.route_escalation(
+                company, risk_info['risk_flags'], product_area_hint, domain)
+            return self._build_result(
+                request_type=request_type_hint, product_area=product_area_hint,
+                domain=domain, domain_info=domain_info, risk_info=risk_info,
+                retrieval_info=retrieval_info,
+                classification_confidence=classification_confidence,
+                status='escalated',
+                response='We apologize, but this issue requires human support. Please wait while we connect you to an agent.',
+                justification=f'Escalated to {route}: Sensitive issue detected (Fallback: LLM unavailable). {reason}',
+                escalation_route=route, escalation_reason=reason
+            )
+
         evidence = domain_filtered if domain_filtered else retrieval_info.get('results', [])
         if evidence and retrieval_info.get('retrieval_confidence', 0) > 0.15:
             sentences = []
