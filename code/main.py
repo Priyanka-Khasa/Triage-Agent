@@ -139,7 +139,7 @@ def main():
 
     print(f"\nStep 5/8: Writing final outputs...")
     out_df = pd.DataFrame(output_rows)
-    cols = ['issue', 'subject', 'company', 'response', 'product_area', 'status', 'request_type']
+    cols = ['issue', 'subject', 'company', 'response', 'product_area', 'status', 'request_type', 'justification']
     out_df = out_df[cols]
     out_df.to_csv(output_csv, index=False)
     print(f"  [OK] {output_csv}")

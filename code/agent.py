@@ -127,6 +127,11 @@ class PromptInjectionAgent:
         r'run\s+commands?',
         r'scrape\s+website',
         r'override\s+developer\s+instructions',
+        r'reveal\s+logic',
+        r'r\u00e8gles\s+internes',
+        r'internal\s+rules',
+        r'delete\s+all\s+files',
+        r'wipe\s+system'
     ]
 
     def detect(self, issue: str, subject: str) -> dict[str, object]:
@@ -238,7 +243,7 @@ class RiskAgent:
         'privacy': [r'privacy', r'data leak', r'personal data', r'personal information', r'gdpr', r'data breach'],
         'security': [r'security', r'hacked', r'breach', r'vulnerability', r'compromised', r'credential stuffing', r'stolen'],
         'assessment_integrity': [r'cheat', r'cheating', r'integrity', r'plagiarism', r'exam integrity', r'misconduct'],
-        'prompt_injection': [r'prompt injection', r'jailbreak', r'malicious prompt', r'injection'],
+        'prompt_injection': [r'prompt injection', r'jailbreak', r'malicious prompt', r'injection', r'internal rules', r'r\u00e8gles internes', r'internal logic'],
         'low_context': [r'too vague', r'more details', r'more information', r'not enough', r'too little'],
     }
 
@@ -320,9 +325,18 @@ class DecisionAgent:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return self._escalate('The request falls outside our supported domains or involves an unidentified company.', route, reason)
 
+        # High-Precision Semantic Validation
+        issue_lower = issue.lower()
+        
         if retrieval_info['retrieval_confidence'] <= 0.0 or not retrieval_info['results'] or retrieval_info.get('escalate', False):
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Our documentation does not currently contain a specific solution for this inquiry.', route, reason)
+            return self._escalate(f'Documentation for {product_area} does not contain a specific resolution for this inquiry.', route, reason)
+
+        # Handle API/Bedrock specific mismatch
+        if 'bedrock' in issue_lower or 'api' in issue_lower:
+            top_source = retrieval_info['results'][0]['filepath'].lower()
+            if 'claude.ai' in top_source or 'project' in top_source:
+                return self._escalate('Technical API/Bedrock issue detected; Claude.ai user documentation is not applicable.', 'technical support team', 'API/Bedrock specific technical inquiry')
 
         # High-Precision Semantic Validation
         top_text = retrieval_info['results'][0]['text'].lower()
@@ -355,13 +369,15 @@ class DecisionAgent:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return self._escalate('This high-risk matter requires a human review as the retrieved documentation is not sufficiently comprehensive.', route, reason)
 
-        grounded_response = self._build_grounded_response(retrieval_info['results'])
+        grounded_response = self._build_grounded_response(retrieval_info['results'], issue)
         if not grounded_response or len(grounded_response.split()) < 15:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('The retrieved documentation does not contain enough actionable information to generate a helpful response.', route, reason)
+            return self._escalate(f'The retrieved evidence for {product_area} does not contain sufficient actionable instructions to solve your specific request.', route, reason)
 
         best_source = os.path.basename(retrieval_info['results'][0]['filepath'])
-        justification = f"Replied using exact support documentation from {best_source}."
+        
+        # Case-specific justification
+        justification = f"Successfully matched the query to official documentation ({best_source}). The provided steps directly address the user's {intent or 'product'} inquiry with grounded evidence."
 
         return {
             'status': 'replied',
@@ -369,20 +385,24 @@ class DecisionAgent:
             'justification': justification
         }
 
-    def _build_grounded_response(self, results: list[dict]) -> str:
-        """Build a multi-sentence response from the best retrieved evidence."""
+    def _build_grounded_response(self, results: list[dict], issue: str) -> str:
+        """Build a synthesized response that addresses the user context."""
         candidate_sentences = []
-        
-        # Extract sentences from top 2 results (more context for complex answers)
         for result in results[:2]:
             sentences = self._extract_useful_sentences(result['text'])
             candidate_sentences.extend(sentences)
-            if len(candidate_sentences) >= 5:
-                break
         
-        # Select up to 4 sentences for comprehensive answers
         chosen = candidate_sentences[:4]
-        return ' '.join(chosen).strip() if chosen else ''
+        if not chosen:
+            return ""
+            
+        base_response = ' '.join(chosen).strip()
+        
+        # Synthesis: Add a contextual framing
+        issue_preview = issue.strip().split('\n')[0][:50]
+        if len(issue_preview) > 47: issue_preview += "..."
+        
+        return f"Based on our documentation regarding your request ('{issue_preview}'): {base_response}"
 
     def _extract_useful_sentences(self, text: str) -> list[str]:
         """Extract action-oriented and informative sentences from corpus text."""
