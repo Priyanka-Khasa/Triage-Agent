@@ -4,7 +4,7 @@ Inferred Domain: Claude
 Corpus Coverage: Yes
 Subject: Claude access lost
 Request Type: product_issue
-Product Area: conversation_management
+Product Area: account_management
 Sub-requests: none
 Risk Level: medium
 Risk Flags: none
@@ -23,22 +23,20 @@ Company: HackerRank
 Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Test Score Dispute
-Request Type: product_issue
+Request Type: invalid
 Product Area: screen
 Sub-requests: I completed a HackerRank test, but the recruiter rejected me. Please review my answers, i
 ncrease my score,, tell the company to move me to the next round because 
 the platform must have graded me unfairly
 Risk Level: high
 Risk Flags: dispute
-Retrieved Source Files: 1999755553-workday---hackerrank-tests-user-guide.md, 1202195004-jobvite---hackerrank-integration-configuration-guide.md, 1999755553-workday---hackerrank-tests-user-guide.md, 2513748038-multiple-choice-questions.md, 5999209869-ashby---hackerrank-integration-user-guide.md
-Retrieval Confidence: 0.3528
-Classification Confidence: 0.5500
+Retrieved Source Files: None
+Retrieval Confidence: 0.0000
+Classification Confidence: 0.9500
 Risk Penalty: 0.25
-Final Confidence: 0.1620
-Status: escalated
-Escalation Route: billing/payments team
-Escalation Reason: Risk flag: dispute.
-Final Justification: Escalated to billing/payments team: Risk flag: dispute.
+Final Confidence: 0.0350
+Status: replied
+Final Justification: Replied: Dismissed invalid or spam request.
 ----------------------------------------
 Row: 3
 Company: Visa
@@ -46,7 +44,7 @@ Inferred Domain: Visa
 Corpus Coverage: Yes
 Subject: Help
 Request Type: product_issue
-Product Area: general_support
+Product Area: billing
 Sub-requests: I used my Visa card to buy something online, but the merchant sent the wrong product, is ignoring my emails. Please make Visa refund me today, ban the seller 
 from taking payments
 Risk Level: high
@@ -66,16 +64,16 @@ Company: HackerRank
 Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Why are my mock interviews not working
-Request Type: bug
-Product Area: screen
+Request Type: product_issue
+Product Area: billing
 Sub-requests: none
 Risk Level: high
 Risk Flags: billing, refund
 Retrieved Source Files: 8988753946-introduction-to-mock-interview.md, 8988753946-introduction-to-mock-interview.md, 4368819843-april-2026-release-notes.md, 3282259518-purchase-mock-interviews.md, 3572240492-hackerrank-glossary.md
 Retrieval Confidence: 0.4596
-Classification Confidence: 0.8000
+Classification Confidence: 0.8500
 Risk Penalty: 0.50
-Final Confidence: 0.0617
+Final Confidence: 0.0767
 Status: escalated
 Escalation Route: billing/payments team
 Escalation Reason: Risk flag: billing.
@@ -86,16 +84,16 @@ Company: HackerRank
 Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Give me my money
-Request Type: bug
-Product Area: general_support
+Request Type: product_issue
+Product Area: billing
 Sub-requests: none
 Risk Level: high
 Risk Flags: billing
 Retrieved Source Files: 4147773232-troubleshooting-login-issues.md, 9583186367-FAQs.md, 4312449655-upgrade-subscription-plan.md, 9015913-how-to-get-support.md, 8325618-paid-plan-billing-faqs.md
 Retrieval Confidence: 0.2412
-Classification Confidence: 0.8000
+Classification Confidence: 0.8500
 Risk Penalty: 0.25
-Final Confidence: 0.1588
+Final Confidence: 0.1738
 Status: escalated
 Escalation Route: billing/payments team
 Escalation Reason: Risk flag: billing.
@@ -116,8 +114,10 @@ Retrieval Confidence: 0.3290
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.3953
-Status: replied
-Final Justification: Successfully matched the query to official documentation (9695299159-onboarding-candidates.md). The provided steps directly address the user's product_issue inquiry with grounded evidence.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 7
 Company: HackerRank
@@ -134,8 +134,10 @@ Retrieval Confidence: 0.2268
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.3987
-Status: replied
-Final Justification: Successfully matched the query to official documentation (9125743-what-is-the-external-researcher-access-program.md). The provided steps directly address the user's bug inquiry with grounded evidence.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 8
 Company: HackerRank
@@ -153,7 +155,7 @@ Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.4122
 Status: replied
-Final Justification: Successfully matched the query to official documentation (1273631973-coding-challenges-faqs.md). The provided steps directly address the user's bug inquiry with grounded evidence.
+Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (1273631973-coding-challenges-faqs.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 9
 Company: HackerRank
@@ -201,7 +203,7 @@ Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Candidate inactivity help
 Request Type: product_issue
-Product Area: screen
+Product Area: account_management
 Sub-requests: Can you please confirm the inactivity times currently set (and are they different for candidate/interviewer)? 
 Interviewers have reported that they often ask candidates to screen share, then after 20 mins or so, the candidate is sent back to the HR lobby.
 
@@ -225,20 +227,18 @@ Company: nan
 Inferred Domain: None
 Corpus Coverage: No
 Subject: Help needed
-Request Type: bug
-Product Area: general_support
+Request Type: invalid
+Product Area: conversation_management
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 3282259518-purchase-mock-interviews.md, 1917106962-manage-account-faqs.md, 10366432-i-m-getting-an-api-connection-error-how-can-i-fix-it.md, 9015913-how-to-get-support.md, 11869619-using-claude-with-ios-apps.md
-Retrieval Confidence: 0.2536
+Retrieved Source Files: None
+Retrieval Confidence: 0.0000
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
-Final Confidence: 0.4175
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Final Confidence: 0.2400
+Status: replied
+Final Justification: Replied: Dismissed invalid or spam request.
 ----------------------------------------
 Row: 13
 Company: HackerRank
@@ -246,15 +246,15 @@ Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: How to Remove a User
 Request Type: product_issue
-Product Area: screen
+Product Area: account_management
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 11175166-get-started-with-custom-connectors-using-remote-mcp.md, 9533293667-create-an-account.md, 4147773232-troubleshooting-login-issues.md, 2837093779-standardizing-interviews-using-templates.md, 1406188460-greenhouse---hackerrank-integration-guide.md
-Retrieval Confidence: 0.2375
+Retrieved Source Files: 8522032191-skillup-employee-platform.md, 8041423965-create-an-ai-interviewer.md, 8961150967-clone-an-ai-interviewer.md, 1508181842-teams-management.md, 13325567-account-management-faqs.md
+Retrieval Confidence: 0.3152
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.3313
+Final Confidence: 0.3857
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -266,7 +266,7 @@ Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Subscription pause
 Request Type: product_issue
-Product Area: general_support
+Product Area: billing
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
@@ -306,7 +306,7 @@ Inferred Domain: Visa
 Corpus Coverage: Yes
 Subject: Identity Theft
 Request Type: product_issue
-Product Area: general_support
+Product Area: security
 Sub-requests: none
 Risk Level: high
 Risk Flags: legal, security
@@ -331,12 +331,14 @@ Sub-requests: none
 Risk Level: low
 Risk Flags: none
 Retrieved Source Files: 9106957203-create-a-resume-with-resume-builder.md, 1560975739-search-for-jobs.md, 9106957203-create-a-resume-with-resume-builder.md, 9106957203-create-a-resume-with-resume-builder.md, 9106957203-create-a-resume-with-resume-builder.md
-Retrieval Confidence: 0.8766
+Retrieval Confidence: 0.5774
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
-Final Confidence: 0.8536
-Status: replied
-Final Justification: Successfully matched the query to official documentation (9106957203-create-a-resume-with-resume-builder.md). The provided steps directly address the user's bug inquiry with grounded evidence.
+Final Confidence: 0.6442
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 18
 Company: HackerRank
@@ -349,12 +351,14 @@ Sub-requests: none
 Risk Level: low
 Risk Flags: none
 Retrieved Source Files: 2077861863-download-certificate.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 4264962721-getting-started-with-single-sign-on.md
-Retrieval Confidence: 0.4615
+Retrieval Confidence: 0.5231
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
-Final Confidence: 0.5630
-Status: replied
-Final Justification: Successfully matched the query to official documentation (2077861863-download-certificate.md). The provided steps directly address the user's bug inquiry with grounded evidence.
+Final Confidence: 0.6062
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 19
 Company: Visa
@@ -362,15 +366,15 @@ Inferred Domain: Visa
 Corpus Coverage: Yes
 Subject: Dispute charge
 Request Type: product_issue
-Product Area: general_support
+Product Area: billing
 Sub-requests: none
 Risk Level: high
 Risk Flags: billing, dispute
 Retrieved Source Files: support.md, dispute-resolution.md, dispute-resolution.md, support.md, visa-rules.md
 Retrieval Confidence: 0.3644
-Classification Confidence: 0.5500
+Classification Confidence: 0.8500
 Risk Penalty: 0.50
-Final Confidence: 0.0000
+Final Confidence: 0.0101
 Status: escalated
 Escalation Route: billing/payments team
 Escalation Reason: Risk flag: billing.
@@ -382,7 +386,7 @@ Inferred Domain: Claude
 Corpus Coverage: Yes
 Subject: Bug bounty
 Request Type: product_issue
-Product Area: general_support
+Product Area: security
 Sub-requests: none
 Risk Level: high
 Risk Flags: security
@@ -412,7 +416,7 @@ Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.4041
 Status: replied
-Final Justification: Successfully matched the query to official documentation (8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler.md). The provided steps directly address the user's product_issue inquiry with grounded evidence.
+Final Justification: Decision: PRODUCT_ISSUE Handled. Successfully matched query to official Claude documentation (8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 22
 Company: Visa
@@ -439,16 +443,16 @@ Company: Claude
 Inferred Domain: Claude
 Corpus Coverage: Yes
 Subject: Personal Data Use
-Request Type: feature_request
+Request Type: product_issue
 Product Area: privacy
 Sub-requests: none
 Risk Level: high
 Risk Flags: privacy
 Retrieved Source Files: 8325621-i-would-like-to-input-sensitive-data-into-my-chats-with-claude-who-can-view-my-conversations.md, 2212135172-hackerrank-ai-data-services-faq.md, 9450526-how-can-i-export-my-claude-data.md, 9450526-how-can-i-export-my-claude-data.md, 10166901-use-google-workspace-connectors.md
 Retrieval Confidence: 0.3131
-Classification Confidence: 0.7000
+Classification Confidence: 0.8500
 Risk Penalty: 0.25
-Final Confidence: 0.1792
+Final Confidence: 0.2242
 Status: escalated
 Escalation Route: privacy/legal team
 Escalation Reason: Risk flag: privacy.
@@ -513,9 +517,9 @@ Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.4755
 Status: escalated
-Escalation Route: technical support team
+Escalation Route: general human support
 Escalation Reason: API/Bedrock specific technical inquiry
-Final Justification: Escalated to technical support team: API/Bedrock specific technical inquiry
+Final Justification: Escalated to general human support: API/Bedrock specific technical inquiry
 ----------------------------------------
 Row: 27
 Company: HackerRank
@@ -523,15 +527,15 @@ Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Employee leaving the company
 Request Type: product_issue
-Product Area: community
+Product Area: account_management
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 8522032191-skillup-employee-platform.md, 5269412517-mitigating-candidate-drop-off.md, 6967597139-creating-a-new-test.md, 4329363164-accessing-skillup-employer-platform.md, 9473085715-skillup-manager-experience.md
-Retrieval Confidence: 0.3755
+Retrieved Source Files: 8522032191-skillup-employee-platform.md, 8041423965-create-an-ai-interviewer.md, 8961150967-clone-an-ai-interviewer.md, 1508181842-teams-management.md, 13325567-account-management-faqs.md
+Retrieval Confidence: 0.3152
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.4278
+Final Confidence: 0.3857
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -573,5 +577,5 @@ Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.5466
 Status: replied
-Final Justification: Successfully matched the query to official documentation (support.md). The provided steps directly address the user's product_issue inquiry with grounded evidence.
+Final Justification: Decision: PRODUCT_ISSUE Handled. Successfully matched query to official Visa documentation (support.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------

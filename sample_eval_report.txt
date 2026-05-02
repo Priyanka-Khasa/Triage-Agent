@@ -7,19 +7,28 @@ Total Tickets: 10
 METRICS:
   Status Accuracy:       60.0%
   Request Type Accuracy: 100.0%
-  Product Area Match:    100.0%
+  Product Area Match:    50.0%
 
 DETAILED DISCREPANCIES:
 ------------------------------------------------------------
+Row 1: Test Active in the system
+  [Area]   Expected: 'screen', Predicted: 'privacy'
+
 Row 3: When should I create a variant versus
  have a different test?
   [Status] Expected: 'replied', Predicted: 'escalated'
 
 Row 5: nan
   [Status] Expected: 'replied', Predicted: 'escalated'
+  [Area]   Expected: 'community', Predicted: 'account_management'
 
 Row 6: nan
   [Status] Expected: 'replied', Predicted: 'escalated'
+  [Area]   Expected: 'privacy', Predicted: 'account_management'
 
 Row 8: nan
   [Status] Expected: 'replied', Predicted: 'escalated'
+  [Area]   Expected: 'travel_support', Predicted: 'security'
+
+Row 9: Card stolen
+  [Area]   Expected: 'general_support', Predicted: 'security'
