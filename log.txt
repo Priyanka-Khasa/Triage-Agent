@@ -96,8 +96,8 @@ Risk Penalty: 0.25
 Final Confidence: 0.1738
 Status: escalated
 Escalation Route: billing/payments team
-Escalation Reason: Risk flag: billing.
-Final Justification: Escalated to billing/payments team: Risk flag: billing.
+Escalation Reason: Identified billing requires expert handling.
+Final Justification: Escalated to billing/payments team: Identified billing requires expert handling.
 ----------------------------------------
 Row: 6
 Company: HackerRank
@@ -134,8 +134,10 @@ Retrieval Confidence: 0.2268
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.3987
-Status: replied
-Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (9125743-what-is-the-external-researcher-access-program.md). The provided response is strictly grounded in the verified manual.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 8
 Company: HackerRank
@@ -152,10 +154,8 @@ Retrieval Confidence: 0.2460
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.4122
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Status: replied
+Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (1273631973-coding-challenges-faqs.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 9
 Company: HackerRank
@@ -169,11 +169,11 @@ connectivity. Due to which i am unable to take the test. I have done all through
 changing the settings, system configurations but still showing error
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 6201558176-assess-candidates-in-canadian-french-language.md, 13403291-how-can-i-check-connectivity-to-the-claude-api.md, 1273631973-coding-challenges-faqs.md, 5805684780-zoom---hackerrank-interview-integration.md, 9722863972-what-is-code-quality.md
-Retrieval Confidence: 0.1905
+Retrieved Source Files: 5805684780-zoom---hackerrank-interview-integration.md, 6271433412-audio-and-video-calls-in-interviews-powered-by-zoom.md, 9911032760-april-2024-release-notes.md, 11176164-use-connectors-to-extend-claude-s-capabilities.md, 1273631973-coding-challenges-faqs.md
+Retrieval Confidence: 0.2798
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.2984
+Final Confidence: 0.3609
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -255,8 +255,10 @@ Retrieval Confidence: 0.3079
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.3805
-Status: replied
-Final Justification: Decision: PRODUCT_ISSUE Handled. Successfully matched query to official HackerRank documentation (5618101592-delete-an-account.md). The provided response is strictly grounded in the verified manual.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 14
 Company: HackerRank
@@ -273,10 +275,8 @@ Retrieval Confidence: 0.6894
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.6476
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Status: replied
+Final Justification: Decision: PRODUCT_ISSUE Handled. Successfully matched query to official HackerRank documentation (5157311476-pause-subscription.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 15
 Company: Claude
@@ -295,8 +295,8 @@ Risk Penalty: 0.00
 Final Confidence: 0.3384
 Status: escalated
 Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Escalation Reason: Service outage detected — escalated to systems team.
+Final Justification: Escalated to general human support: Service outage detected — escalated to systems team.
 ----------------------------------------
 Row: 16
 Company: Visa
@@ -343,16 +343,16 @@ Company: HackerRank
 Inferred Domain: HackerRank
 Corpus Coverage: Yes
 Subject: Certificate name update
-Request Type: bug
+Request Type: product_issue
 Product Area: screen
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
 Retrieved Source Files: 2077861863-download-certificate.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 4264962721-getting-started-with-single-sign-on.md, 8941367927-certifications-faqs.md
 Retrieval Confidence: 0.3252
-Classification Confidence: 0.8000
+Classification Confidence: 0.8500
 Risk Penalty: 0.00
-Final Confidence: 0.4676
+Final Confidence: 0.4826
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -453,8 +453,8 @@ Risk Penalty: 0.25
 Final Confidence: 0.2242
 Status: escalated
 Escalation Route: privacy/legal team
-Escalation Reason: Risk flag: privacy.
-Final Justification: Escalated to privacy/legal team: Risk flag: privacy.
+Escalation Reason: Identified privacy requires expert handling.
+Final Justification: Escalated to privacy/legal team: Identified privacy requires expert handling.
 ----------------------------------------
 Row: 24
 Company: nan
