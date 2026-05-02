@@ -329,7 +329,7 @@ class DecisionAgent:
         issue_lower = issue.lower()
         
         # 1. Define High-Value Intent Keywords
-        INTENT_KEYWORDS = ['access', 'restore', 'refund', 'delete', 'cancel', 'reset', 'password', 'error', 'bug', 'hack', 'stolen', 'payment', 'billing']
+        INTENT_KEYWORDS = ['access', 'restore', 'refund', 'delete', 'remove', 'cancel', 'reset', 'password', 'error', 'bug', 'hack', 'stolen', 'payment', 'billing', 'admin', 'user', 'hiring']
         critical_keywords_in_issue = [k for k in INTENT_KEYWORDS if k in issue_lower]
         
         # 2. Check if the retrieved text also contains these critical intent keywords

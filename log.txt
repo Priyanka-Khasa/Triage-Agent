@@ -275,8 +275,10 @@ Retrieval Confidence: 0.6349
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.6094
-Status: replied
-Final Justification: Replied using exact support documentation from 5157311476-pause-subscription.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 15
 Company: Claude
@@ -528,8 +530,10 @@ Retrieval Confidence: 0.3755
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.4278
-Status: replied
-Final Justification: Replied using exact support documentation from 8522032191-skillup-employee-platform.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 28
 Company: Claude

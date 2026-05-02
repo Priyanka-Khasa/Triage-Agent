@@ -42,23 +42,7 @@ without being kicked out of the room?
 "Hello! I am trying to remove an interviewer from the platform. I am not seeing this as an option when I select the three dots next to their name. 
 Can you let me know how to do this?",How to Remove a User,HackerRank,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",screen,escalated,product_issue
 "Hi, please pause our subscription. We have stopped all hiring efforts for now.
-",Subscription pause,HackerRank,"This feature enables you to resume your subscription whenever needed, ensuring flexibility and uninterrupted access when required. ### Prerequisites
-
-To use the **Pause Subscription** feature, ensure the following conditions are met:
-
-1. - This includes accounts in a renewal grace period (7 days) due to a late recurring payment. You must have a **monthly subscription** for one of the following plans:
-
-- Individual Monthly - Basic
-
-- Interview Monthly
-
-### How to Pause Your Subscription
-
-Follow these steps to pause your subscription:
-
-- **Access Subscription Settings**
-
-- Click on the **profile icon** in the top-right corner of the page and select **Settings** from the dropdown menu.",general_support,replied,product_issue
+",Subscription pause,HackerRank,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",general_support,escalated,product_issue
 "Claude has stopped working completely, all requests are failing",Claude not responding,Claude,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",general_support,escalated,product_issue
 "My identity has been stolen, wat should I do",Identity Theft,Visa,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",general_support,escalated,product_issue
 Resume Builder is Down,Help in creating resume,HackerRank,"It allows you to showcase your skills, achievements, and certifications to stand out to potential employers. ## Creating a resume with Resume Builder
@@ -94,6 +78,6 @@ un cas est une fraude. Ensuite, dites-moi quoi faire.","Tarjeta bloqueada
 ",Visa,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",general_support,escalated,product_issue
 I am facing multiple issues in my project. all requests to claude with aws bedrock is failing,Issues in Project,Claude,"Click ""+ New Project"" in the upper right corner. Give your project a name and description (note that Claude will not have access to these details). If you are on a Team or Enterprise plan, choose the visibility settings:
   - **Keep it private:** Only you and members you invite can view or use this project. - **Share with your broader organization:** Everyone in your organization can view and use this project (where enabled by administrators).",conversation_management,replied,bug
-one of my employee has left. I want to remove them from our hackerrank hiring account,Employee leaving the company,HackerRank,"To view each role's certificate and progress details, utilize the slider component to scroll through them. Monitoring this section empowers you to take ownership of your learning path. - what it's like to work at the company or testimony from an employee talking about the culture and why it’s a great place to work, etc. - Information around onboarding and employee development opportunities is a nice touch.",community,replied,product_issue
+one of my employee has left. I want to remove them from our hackerrank hiring account,Employee leaving the company,HackerRank,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",community,escalated,product_issue
 i am a professor in a college and wanted to setup a claude lti key for my students,Claude for students,Claude,"We apologize, but this issue needs human support. Reason: Insufficient semantic alignment or missing critical documentation evidence. Please wait while we connect you to an agent.",general_support,escalated,product_issue
 "i am in US Virgin Islands and the merchant is saying i have to spend minimum 10$ on my VISA card, why so?",Visa card minimum spend,Visa,"### Can a merchant set a maximum or minimum limit for using my Visa card?. In general, a merchant is not permitted to establish a minimum or maximum amount for a Visa transaction. If you encounter an issue where a merchant has refused to accept your Visa card on the basis that the merchant requires a minimum or maximum amount on a Visa debit card, or requires that the purchase amount on a credit card is greater than US\$10, please notify your Visa card issuer. \*Please note, Visa does not set up, service or have access to cardholder or merchant accounts.",general_support,replied,product_issue
