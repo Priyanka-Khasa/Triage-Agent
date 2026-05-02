@@ -441,22 +441,54 @@ class DecisionAgent:
                 
         # 2. Update/Change vs View/Download Check
         if any(w in issue_lower for w in ['update', 'change', 'edit', 'modify', 'incorrect', 'fix', 'correct']):
-            if not any(w in doc_lower for w in ['update', 'change', 'edit', 'modify', 'settings', 'fix', 'correct', 'regenerate']):
+            if not any(w in doc_lower for w in ['update', 'change', 'edit', 'modify', 'settings', 'fix', 'correct', 'regenerate', 'amend']):
                 return False 
                 
         # 3. Access/Login/Seat Check
         if any(w in issue_lower for w in ['access', 'login', 'permission', 'seat', 'remove', 'add', 'restore']):
-            if not any(w in doc_lower for w in ['access', 'permission', 'login', 'credentials', 'reset', 'manage', 'user', 'member', 'restore', 'reactivate']):
+            if not any(w in doc_lower for w in ['access', 'permission', 'login', 'credentials', 'reset', 'manage', 'user', 'member', 'restore', 'reactivate', 'permissions']):
                 return False
 
         # 4. UI/Navigation Check (The "Apply Tab" case)
         if any(w in issue_lower for w in ['tab', 'button', 'link', 'menu', 'navigation', 'where is', 'cannot see', 'missing']):
-            if not any(w in doc_lower for w in ['tab', 'button', 'menu', 'sidebar', 'header', 'click', 'navigate', 'locate']):
+            if not any(w in doc_lower for w in ['tab', 'button', 'menu', 'sidebar', 'header', 'click', 'navigate', 'locate', 'apply']):
                 return False
         
         # 5. Refund/Billing Check (The "Refund" case)
         if any(w in issue_lower for w in ['refund', 'money back', 'reimbursement', 'chargeback']):
-            if not any(w in doc_lower for w in ['refund', 'billing', 'transaction', 'reimburse', 'payment', 'money', 'cancel']):
+            if not any(w in doc_lower for w in ['refund', 'billing', 'transaction', 'reimburse', 'payment', 'money', 'cancel', 'issuer', 'dispute']):
+                return False
+
+        # 6. Certificate name update must be actual name-edit guidance, not download instructions.
+        if 'certificate' in issue_lower and any(w in issue_lower for w in ['name', 'incorrect', 'update', 'change', 'correct']):
+            # REJECTION: If the doc is purely about downloading and lacks update/edit verbs
+            # OR if the verbs are not linked to certificates/names
+            has_name_action = any(phrase in doc_lower for phrase in ['update name', 'change name', 'correct name', 'edit name', 'modify name', 'name on certificate', 'certificate name'])
+            if not has_name_action:
+                return False
+
+        # 7. Lost access due to seat removal should NOT match admin/workspace-edit docs.
+        if any(w in issue_lower for w in ['lost access', 'access lost', 'seat removed', 'removed my seat', 'revoked', 'cannot access']):
+            # BLACKLIST: Documents that are about admin workspace configuration
+            admin_phrases = ['workspace settings', 'edit workspace', 'change workspace', 'workspace name', 'workspace color', 'invite member', 'manage members', 'admin role']
+            if any(phrase in doc_lower for phrase in admin_phrases):
+                # Only allow if it ALSO explicitly mentions restoration/permissions/reactivation of a lost seat
+                if not any(w in doc_lower for w in ['restore access', 'reactivate user', 'grant access', 'unrevoke', 'reassign seat']):
+                    return False
+
+        # 8. Dispute charge must mention dispute/issuer/contact, not just login or billing info.
+        if 'dispute' in issue_lower or 'chargeback' in issue_lower:
+            if not any(w in doc_lower for w in ['dispute', 'chargeback', 'issuer', 'card issuer', 'merchant', 'contest', 'billing dispute', 'resolution']):
+                return False
+
+        # 9. Claude LTI key or integration should mention LTI/setup/key or integration guidance.
+        if 'lti' in issue_lower or 'claude lti' in issue_lower or 'lti key' in issue_lower:
+            if not any(w in doc_lower for w in ['lti', 'key', 'integration', 'setup', 'installation', 'configure']):
+                return False
+
+        # 10. Resume Builder outage should contain outage or error context.
+        if 'resume builder' in issue_lower and any(w in issue_lower for w in ['down', 'not working', 'failing']):
+            if not any(w in doc_lower for w in ['down', 'outage', 'error', 'issue', 'status', 'service']):
                 return False
                 
         return True
@@ -464,7 +496,11 @@ class DecisionAgent:
     def _build_grounded_response(self, results: list[dict], issue: str) -> str:
         """Build a synthesized response that addresses the user context."""
         candidate_sentences = []
-        for result in results[:2]:
+        valid_results = [result for result in results[:3] if self._is_chunk_complete(result['text'])]
+        if not valid_results:
+            return ""
+
+        for result in valid_results:
             sentences = self._extract_useful_sentences(result['text'])
             candidate_sentences.extend(sentences)
         
@@ -473,18 +509,14 @@ class DecisionAgent:
             return ""
             
         base_response = ' '.join(chosen).strip()
+        if not self._is_response_complete(base_response):
+            return ""
         
-        # Synthesis: Add a contextual framing
         issue_preview = issue.strip().split('\n')[0][:50]
-        if len(issue_preview) > 47: issue_preview += "..."
+        if len(issue_preview) > 47:
+            issue_preview += "..."
         
-        synthesized = f"Based on our documentation regarding your request ('{issue_preview}'): {base_response}"
-        
-        # FIX: Remove cliffhangers (e.g. ending in "1." or "to:")
-        synthesized = re.sub(r'[\d\.]+$', '', synthesized).strip()
-        synthesized = re.sub(r'[:]$', '.', synthesized).strip()
-        
-        return synthesized
+        return f"Based on our documentation regarding your request ('{issue_preview}'): {base_response}"
 
     def _extract_useful_sentences(self, text: str) -> list[str]:
         """Extract action-oriented and informative sentences from corpus text."""
@@ -502,12 +534,41 @@ class DecisionAgent:
             
             # Prioritize action-oriented sentences (steps, instructions)
             if any(keyword in lowered for keyword in self.ACTION_KEYWORDS):
-                filtered.append(sentence.rstrip('.').strip() + '.')
+                # FIX: Do not strip trailing punctuation if it's a colon (cliffhanger)
+                clean_s = sentence.strip()
+                if not clean_s.endswith('.'):
+                    filtered.append(clean_s)
+                else:
+                    filtered.append(clean_s)
             # Also capture informative sentences (at least 8 words) if not many actions yet
             elif len(filtered) < 2 and len(sentence.split()) >= 8:
-                filtered.append(sentence.rstrip('.').strip() + '.')
+                filtered.append(sentence.strip())
         
         return filtered
+
+    def _is_chunk_complete(self, text: str) -> bool:
+        stripped = text.rstrip()
+        if not stripped:
+            return False
+        if stripped.endswith(':'):
+            return False
+        if re.search(r'\d+\.\s*$', stripped):
+            return False
+        if stripped.endswith(('•', '*', '-', '+')):
+            return False
+        if any(stripped.endswith(token) for token in [' and', ' or', ' then', ' but', ' because']):
+            return False
+        return True
+
+    def _is_response_complete(self, response: str) -> bool:
+        trimmed = response.strip()
+        if not trimmed:
+            return False
+        if trimmed.endswith(':'):
+            return False
+        if re.search(r'\d+\.\s*$', trimmed):
+            return False
+        return True
 
     def _escalate_personalized(self, issue: str, subject: str, product_area: str, route: str, route_reason: str) -> dict:
         """Create a personalized escalation message without internal metrics."""
@@ -734,14 +795,20 @@ class TriageAgent:
         text_lower = (issue + ' ' + subject).lower()
         
         # Special handling for specific query types to improve retrieval accuracy
-        if 'certificate' in text_lower and ('update' in text_lower or 'change' in text_lower or 'name' in text_lower):
-            base_query = f"{source} certificate update name change"
+        if 'access lost' in text_lower or 'lost access' in text_lower or 'seat removed' in text_lower or 'removed my seat' in text_lower or 'revoked' in text_lower:
+            base_query = f"{source} access lost revoked seat permissions login"
+        elif 'certificate' in text_lower and ('update' in text_lower or 'change' in text_lower or 'name' in text_lower):
+            base_query = f"{source} certificate update name change correct edit amend"
         elif 'resume builder' in text_lower and ('down' in text_lower or 'not working' in text_lower):
-            base_query = f"{source} resume builder down outage error"
-        elif 'apply tab' in text_lower and ('cannot see' in text_lower or 'missing' in text_lower):
-            base_query = f"{source} apply tab missing navigation"
+            base_query = f"{source} resume builder down outage error issue"
+        elif 'apply tab' in text_lower and ('cannot see' in text_lower or 'missing' in text_lower or 'not visible' in text_lower):
+            base_query = f"{source} apply tab missing navigate access visible"
+        elif 'dispute' in text_lower or 'chargeback' in text_lower:
+            base_query = f"{source} dispute charge chargeback issuer resolution contact card"
         elif 'remove' in text_lower and ('employee' in text_lower or 'interviewer' in text_lower):
-            base_query = f"{source} remove employee interviewer account management"
+            base_query = f"{source} remove employee interviewer delete user manage account"
+        elif 'pause' in text_lower and 'subscription' in text_lower:
+            base_query = f"{source} pause subscription billing account settings"
         else:
             base_query = ' '.join([source, subject, issue]).strip()
         

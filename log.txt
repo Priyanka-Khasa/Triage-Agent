@@ -8,11 +8,11 @@ Product Area: account_management
 Sub-requests: none
 Risk Level: medium
 Risk Flags: none
-Retrieved Source Files: 9796807-creating-and-managing-workspaces-in-the-claude-console.md, 9796807-creating-and-managing-workspaces-in-the-claude-console.md, 9796807-creating-and-managing-workspaces-in-the-claude-console.md, 9611303302-grant-team-admin-access.md, 13930458-set-up-role-based-permissions-on-enterprise-plans.md
-Retrieval Confidence: 0.3581
+Retrieved Source Files: 12542951-enable-and-use-the-microsoft-365-connector.md, 13393991-purchase-and-manage-seats-on-enterprise-plans.md, 11869619-using-claude-with-ios-apps.md, 11526368-how-am-i-billed-for-my-enterprise-plan.md, 12004354-purchase-and-manage-seats-on-team-plans.md
+Retrieval Confidence: 0.2811
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.4157
+Final Confidence: 0.3618
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -134,10 +134,8 @@ Retrieval Confidence: 0.2268
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.3987
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Status: replied
+Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (9125743-what-is-the-external-researcher-access-program.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 8
 Company: HackerRank
@@ -154,8 +152,10 @@ Retrieval Confidence: 0.2460
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.4122
-Status: replied
-Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (1273631973-coding-challenges-faqs.md). The provided response is strictly grounded in the verified manual.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 9
 Company: HackerRank
@@ -250,15 +250,13 @@ Product Area: account_management
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 8522032191-skillup-employee-platform.md, 8041423965-create-an-ai-interviewer.md, 8961150967-clone-an-ai-interviewer.md, 1508181842-teams-management.md, 13325567-account-management-faqs.md
-Retrieval Confidence: 0.3152
+Retrieved Source Files: 5618101592-delete-an-account.md, 1917106962-manage-account-faqs.md, 1917106962-manage-account-faqs.md, 8522032191-skillup-employee-platform.md, 9552481360-deleting-a-test.md
+Retrieval Confidence: 0.3079
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.3857
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Final Confidence: 0.3805
+Status: replied
+Final Justification: Decision: PRODUCT_ISSUE Handled. Successfully matched query to official HackerRank documentation (5618101592-delete-an-account.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 14
 Company: HackerRank
@@ -270,11 +268,11 @@ Product Area: billing
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 5157311476-pause-subscription.md, 5157311476-pause-subscription.md, 5157311476-pause-subscription.md, 3131912618-cancel-subscription.md, 5157311476-pause-subscription.md
-Retrieval Confidence: 0.6349
+Retrieved Source Files: 5157311476-pause-subscription.md, 5157311476-pause-subscription.md, 10185996-how-to-change-your-pro-plan-from-monthly-to-annual-billing.md, 5157311476-pause-subscription.md, 12997130-understanding-your-billing-address-and-tax-calculation.md
+Retrieval Confidence: 0.6894
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.6094
+Final Confidence: 0.6476
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -331,10 +329,10 @@ Sub-requests: none
 Risk Level: low
 Risk Flags: none
 Retrieved Source Files: 9106957203-create-a-resume-with-resume-builder.md, 1560975739-search-for-jobs.md, 9106957203-create-a-resume-with-resume-builder.md, 9106957203-create-a-resume-with-resume-builder.md, 9106957203-create-a-resume-with-resume-builder.md
-Retrieval Confidence: 0.5774
+Retrieval Confidence: 0.5382
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
-Final Confidence: 0.6442
+Final Confidence: 0.6167
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
@@ -350,13 +348,15 @@ Product Area: screen
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 2077861863-download-certificate.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 4264962721-getting-started-with-single-sign-on.md
-Retrieval Confidence: 0.5231
+Retrieved Source Files: 2077861863-download-certificate.md, 8941367927-certifications-faqs.md, 8941367927-certifications-faqs.md, 4264962721-getting-started-with-single-sign-on.md, 8941367927-certifications-faqs.md
+Retrieval Confidence: 0.3252
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
-Final Confidence: 0.6062
-Status: replied
-Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (2077861863-download-certificate.md). The provided response is strictly grounded in the verified manual.
+Final Confidence: 0.4676
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 19
 Company: Visa
@@ -368,11 +368,11 @@ Product Area: billing
 Sub-requests: none
 Risk Level: high
 Risk Flags: billing, dispute
-Retrieved Source Files: support.md, dispute-resolution.md, dispute-resolution.md, support.md, visa-rules.md
-Retrieval Confidence: 0.3644
+Retrieved Source Files: support.md, dispute-resolution.md, support.md, dispute-resolution.md, support.md
+Retrieval Confidence: 0.4613
 Classification Confidence: 0.8500
 Risk Penalty: 0.50
-Final Confidence: 0.0101
+Final Confidence: 0.0779
 Status: escalated
 Escalation Route: billing/payments team
 Escalation Reason: Risk flag: billing.
@@ -529,11 +529,11 @@ Product Area: account_management
 Sub-requests: none
 Risk Level: low
 Risk Flags: none
-Retrieved Source Files: 8522032191-skillup-employee-platform.md, 8041423965-create-an-ai-interviewer.md, 8961150967-clone-an-ai-interviewer.md, 1508181842-teams-management.md, 13325567-account-management-faqs.md
-Retrieval Confidence: 0.3152
+Retrieved Source Files: 5618101592-delete-an-account.md, 1917106962-manage-account-faqs.md, 1917106962-manage-account-faqs.md, 8522032191-skillup-employee-platform.md, 9552481360-deleting-a-test.md
+Retrieval Confidence: 0.3079
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
-Final Confidence: 0.3857
+Final Confidence: 0.3805
 Status: escalated
 Escalation Route: general human support
 Escalation Reason: No specific risk flags; routing to general support.
