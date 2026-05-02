@@ -33,7 +33,7 @@ def update_dashboard():
             "product_area": str(row['product_area']),
             "status": str(row['status']),
             "request_type": str(row['request_type']),
-            "justification": str(row['justification']),
+            "justification": str(audit_row['justification']),
             "final_confidence": float(audit_row['final_confidence']),
             "escalation_route": str(audit_row['escalation_route']) if audit_row['escalation_route'] != 'none' else None,
             "escalation_reason": "Sensitive handling required" if row['status'] == 'escalated' else None
@@ -63,13 +63,17 @@ def update_dashboard():
     if tickets_marker in html_content:
         html_content = html_content.replace(tickets_marker, f"const allTickets = {json.dumps(tickets)};")
     else:
-        # Fallback to a slightly more flexible regex if markers were already replaced
-        html_content = re.sub(r'const allTickets = \[.*?\];', f'const allTickets = {json.dumps(tickets)};', html_content, flags=re.DOTALL)
+        # Use a lambda to avoid backslash escaping issues in re.sub
+        pattern = r'const allTickets = \[.*?\];'
+        replacement = f"const allTickets = {json.dumps(tickets)};"
+        html_content = re.sub(pattern, lambda m: replacement, html_content, flags=re.DOTALL)
 
     if coverage_marker in html_content:
         html_content = html_content.replace(coverage_marker, f"const corpusCoverage = {json.dumps(corpus_stats)};")
     else:
-        html_content = re.sub(r'const corpusCoverage = \{.*?\};', f'const corpusCoverage = {json.dumps(corpus_stats)};', html_content, flags=re.DOTALL)
+        pattern = r'const corpusCoverage = \{.*?\};'
+        replacement = f"const corpusCoverage = {json.dumps(corpus_stats)};"
+        html_content = re.sub(pattern, lambda m: replacement, html_content, flags=re.DOTALL)
 
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(html_content)

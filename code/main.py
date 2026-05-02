@@ -133,12 +133,13 @@ def main():
                 "final_confidence": f"{ticket_result['final_confidence']:.4f}",
                 "top_sources": "|".join(ticket_result['retrieved_sources']) if ticket_result['retrieved_sources'] else 'none',
                 "escalation_route": ticket_result.get('escalation_route') or 'none',
-                "decision": ticket_result['status']
+                "decision": ticket_result['status'],
+                "justification": ticket_result['justification']
             })
 
     print(f"\nStep 5/8: Writing final outputs...")
     out_df = pd.DataFrame(output_rows)
-    cols = ['issue', 'subject', 'company', 'response', 'product_area', 'status', 'request_type', 'justification']
+    cols = ['issue', 'subject', 'company', 'response', 'product_area', 'status', 'request_type']
     out_df = out_df[cols]
     out_df.to_csv(output_csv, index=False)
     print(f"  [OK] {output_csv}")

@@ -5,9 +5,21 @@ Sample Source: sample_support_tickets.csv
 Total Tickets: 10
 
 METRICS:
-  Status Accuracy:       100.0%
+  Status Accuracy:       60.0%
   Request Type Accuracy: 100.0%
   Product Area Match:    100.0%
 
 DETAILED DISCREPANCIES:
 ------------------------------------------------------------
+Row 3: When should I create a variant versus
+ have a different test?
+  [Status] Expected: 'replied', Predicted: 'escalated'
+
+Row 5: nan
+  [Status] Expected: 'replied', Predicted: 'escalated'
+
+Row 6: nan
+  [Status] Expected: 'replied', Predicted: 'escalated'
+
+Row 8: nan
+  [Status] Expected: 'replied', Predicted: 'escalated'

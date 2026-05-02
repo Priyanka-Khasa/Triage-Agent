@@ -3,17 +3,22 @@
 ## Quick Navigation
 
 ### For the Judge (Start Here)
-1. **[SUBMISSION_SUMMARY.md](SUBMISSION_SUMMARY.md)** ← READ FIRST
+1. **[JUDGES_QUICK_START.md](JUDGES_QUICK_START.md)** ← START HERE (2 min)
+   - TL;DR summary for busy judges
+   - 15-minute evaluation plan
+   - Validation checklist
+
+2. **[SUBMISSION_SUMMARY.md](SUBMISSION_SUMMARY.md)** ← Main Story (2 min)
    - Final stats: 100% sample accuracy, 29 tickets processed
    - What changed this session
    - How to achieve 200% selection
 
-2. **[JUDGE_INTERVIEW_PREP.md](JUDGE_INTERVIEW_PREP.md)** ← Interview Reference
+3. **[JUDGE_INTERVIEW_PREP.md](JUDGE_INTERVIEW_PREP.md)** ← Interview Reference (3 min)
    - Quick stats and math
    - How to explain key decisions
    - Answers to likely questions
 
-3. **[output.csv](support_tickets/output.csv)** ← Main Deliverable
+4. **[output.csv](support_tickets/output.csv)** ← Main Deliverable (3 min)
    - 29 triage decisions in required format
    - All columns populated (issue, subject, company, response, product_area, status, request_type, justification)
 
@@ -53,11 +58,12 @@
    - Product Area Match: 100%
 
 ### Documentation
-10. **[README.md](README.md)** ← Original Task
-11. **[problem_statement.md](problem_statement.md)** ← Requirements
-12. **[evalutation_criteria.md](evalutation_criteria.md)** ← Scoring Rubric
-13. **[AGENTS.md](AGENTS.md)** ← Original Constraints
-14. **[SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md)** ← Validation
+10. **[JUDGES_QUICK_START.md](JUDGES_QUICK_START.md)** ← For Judges (START HERE)
+11. **[README.md](README.md)** ← Original Task
+12. **[problem_statement.md](problem_statement.md)** ← Requirements
+13. **[evalutation_criteria.md](evalutation_criteria.md)** ← Scoring Rubric
+14. **[AGENTS.md](AGENTS.md)** ← Original Constraints
+15. **[SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md)** ← Validation
 
 ## File Organization
 

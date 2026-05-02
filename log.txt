@@ -13,8 +13,10 @@ Retrieval Confidence: 0.3581
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.4157
-Status: replied
-Final Justification: Replied using exact support documentation from 9796807-creating-and-managing-workspaces-in-the-claude-console.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 2
 Company: HackerRank
@@ -253,8 +255,10 @@ Retrieval Confidence: 0.2375
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.3313
-Status: replied
-Final Justification: Replied using exact support documentation from 11175166-get-started-with-custom-connectors-using-remote-mcp.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 14
 Company: HackerRank
@@ -289,8 +293,10 @@ Retrieval Confidence: 0.2477
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.3384
-Status: replied
-Final Justification: Replied using exact support documentation from 11940350-claude-code-model-configuration.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 16
 Company: Visa
@@ -421,8 +427,10 @@ Retrieval Confidence: 0.4230
 Classification Confidence: 0.5500
 Risk Penalty: 0.00
 Final Confidence: 0.4611
-Status: replied
-Final Justification: Replied using exact support documentation from travel-support.md.
+Status: escalated
+Escalation Route: general human support
+Escalation Reason: No specific risk flags; routing to general support.
+Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
 ----------------------------------------
 Row: 23
 Company: Claude

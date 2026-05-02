@@ -296,12 +296,12 @@ class DecisionAgent:
     def __init__(self):
         self.escalation_router = EscalationRouter()
 
-    def decide(self, domain_info: dict, intent: str, risk_info: dict, retrieval_info: dict, malicious_detected: bool = False, company: str = None, product_area: str = None) -> dict:
+    def decide(self, domain_info: dict, intent: str, risk_info: dict, retrieval_info: dict, malicious_detected: bool = False, company: str = None, product_area: str = None, issue: str = "") -> dict:
         if malicious_detected:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             return {
                 'status': 'escalated',
-                'response': 'This request cannot be handled automatically due to malicious or unsupported instructions. It requires human review.',
+                'response': 'This request cannot be handled automatically due to potentially malicious or unsupported instructions detected in the query. For security reasons, this has been routed to our specialized integrity team.',
                 'justification': f'Escalated to {route}: malicious or unsupported instruction detected.',
                 'escalation_route': route,
                 'escalation_reason': 'Malicious instruction detected.'
@@ -310,7 +310,7 @@ class DecisionAgent:
         if intent == 'invalid':
             return {
                 'status': 'replied',
-                'response': 'This request is unrelated to our products or invalid. We cannot assist you with this.',
+                'response': 'This request is unrelated to our products or does not contain a clear support inquiry. We cannot assist you with this at this time.',
                 'justification': 'Replied: Dismissed invalid or spam request.',
                 'escalation_route': None,
                 'escalation_reason': None
@@ -318,25 +318,47 @@ class DecisionAgent:
 
         if domain_info['out_of_scope']:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Unsupported domain or no supported company inferred from the ticket.', route, reason)
+            return self._escalate('The request falls outside our supported domains or involves an unidentified company.', route, reason)
 
         if retrieval_info['retrieval_confidence'] <= 0.0 or not retrieval_info['results'] or retrieval_info.get('escalate', False):
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Insufficient documentation or no relevant corpus evidence found.', route, reason)
+            return self._escalate('Our documentation does not currently contain a specific solution for this inquiry.', route, reason)
 
+        # High-Precision Semantic Validation
+        top_text = retrieval_info['results'][0]['text'].lower()
+        issue_lower = issue.lower()
+        
+        # 1. Define High-Value Intent Keywords
+        INTENT_KEYWORDS = ['access', 'restore', 'refund', 'delete', 'cancel', 'reset', 'password', 'error', 'bug', 'hack', 'stolen', 'payment', 'billing']
+        critical_keywords_in_issue = [k for k in INTENT_KEYWORDS if k in issue_lower]
+        
+        # 2. Check if the retrieved text also contains these critical intent keywords
+        missing_critical_match = False
+        for k in critical_keywords_in_issue:
+            if k not in top_text:
+                missing_critical_match = True
+                break
+
+        # 3. Keyword Overlap (Nouns/Verbs > 4 chars)
+        keywords = [w for w in re.findall(r'\b\w{5,}\b', issue_lower)]
+        match_count = sum(1 for k in keywords if k in top_text)
+        semantic_confidence = match_count / max(1, len(keywords))
+        
         final_confidence = retrieval_info.get('final_confidence', 0.0)
-        if final_confidence < 0.30:
+        
+        # Thresholds for safe replying - now much stricter for critical intents
+        if missing_critical_match or final_confidence < 0.35 or semantic_confidence < 0.15:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Insufficient confidence from retrieved support evidence.', route, reason)
+            return self._escalate('Insufficient semantic alignment or missing critical documentation evidence.', route, reason)
 
-        if risk_info['risk_level'] == 'high' and retrieval_info['retrieval_confidence'] < 0.30:
+        if risk_info['risk_level'] == 'high' and retrieval_info['retrieval_confidence'] < 0.45:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Sensitive issue detected with weak evidence. Human support requested.', route, reason)
+            return self._escalate('This high-risk matter requires a human review as the retrieved documentation is not sufficiently comprehensive.', route, reason)
 
         grounded_response = self._build_grounded_response(retrieval_info['results'])
-        if not grounded_response or len(grounded_response.split()) < 20:
+        if not grounded_response or len(grounded_response.split()) < 15:
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
-            return self._escalate('Retrieved evidence does not contain sufficient actionable guidance.', route, reason)
+            return self._escalate('The retrieved documentation does not contain enough actionable information to generate a helpful response.', route, reason)
 
         best_source = os.path.basename(retrieval_info['results'][0]['filepath'])
         justification = f"Replied using exact support documentation from {best_source}."
@@ -510,12 +532,12 @@ class TriageAgent:
             product_area = 'conversation_management'
 
         if injection_info['detected']:
-            decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, malicious_detected=True, company=company, product_area=product_area)
+            decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, malicious_detected=True, company=company, product_area=product_area, issue=issue)
         elif is_multi_request and len(sub_requests) > 2 and any(detail['risk_info']['risk_level'] == 'high' for detail in subrequest_details):
             route, reason = self.escalation_router.route_escalation(company, risk_info['risk_flags'], product_area, domain_info['domain'])
             decision = self.decision_agent._escalate('Multiple complex sub-requests with conflicting risk levels detected.', route, reason)
         else:
-            decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, company=company, product_area=product_area)
+            decision = self.decision_agent.decide(domain_info, request_type, risk_info, retrieval_info, company=company, product_area=product_area, issue=issue)
 
         return {
             'request_type': request_type,
