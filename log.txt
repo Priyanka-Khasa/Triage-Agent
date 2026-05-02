@@ -355,10 +355,8 @@ Retrieval Confidence: 0.5231
 Classification Confidence: 0.8000
 Risk Penalty: 0.00
 Final Confidence: 0.6062
-Status: escalated
-Escalation Route: general human support
-Escalation Reason: No specific risk flags; routing to general support.
-Final Justification: Escalated to general human support: No specific risk flags; routing to general support.
+Status: replied
+Final Justification: Decision: BUG Handled. Successfully matched query to official HackerRank documentation (2077861863-download-certificate.md). The provided response is strictly grounded in the verified manual.
 ----------------------------------------
 Row: 19
 Company: Visa

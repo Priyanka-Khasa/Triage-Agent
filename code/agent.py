@@ -429,28 +429,34 @@ class DecisionAgent:
         }
 
     def _is_doc_relevant_to_intent(self, issue: str, doc_text: str) -> bool:
-        """Heuristic check to see if the document actually addresses the specific problem type."""
+        """Strict check to see if the document addresses the specific action requested."""
         issue_lower = issue.lower()
         doc_lower = doc_text.lower()
         
-        # 1. Outage/Down Check
-        if any(w in issue_lower for w in ['down', 'outage', 'broken', 'not working', 'is down']):
-            if not any(w in doc_lower for w in ['outage', 'status', 'maintenance', 'support team', 'known issue', 'troubleshoot', 'error', 'fix']):
-                return False # Doc is just a manual, not a status report or fix
-                
-        # 2. Update/Change vs View/Download Check
-        if any(w in issue_lower for w in ['update', 'change', 'correct', 'fix', 'modify']) and 'name' in issue_lower:
-            if not any(w in doc_lower for w in ['change', 'edit', 'modify', 'settings', 'regenerate']):
-                return False # Doc might just be for viewing or downloading
-                
-        # 3. Access/Login Check
-        if any(w in issue_lower for w in ['access', 'login', 'cannot see', 'missing', 'not visible', 'cannot', 'can not']):
-            if not any(w in doc_lower for w in ['access', 'permission', 'login', 'credentials', 'reset', 'navigate', 'tab', 'visible']):
+        # 1. Outage/Bug Check
+        if any(w in issue_lower for w in ['down', 'outage', 'broken', 'not working', 'is down', 'unavailable', 'stopped working']):
+            # If reporting an outage, a "how-to" guide is rarely sufficient
+            if not any(w in doc_lower for w in ['known issue', 'maintenance', 'status', 'outage', 'unplanned', 'investigating', 'incident']):
                 return False
                 
-        # 4. Remove/Delete Check
-        if any(w in issue_lower for w in ['remove', 'delete', 'leaving', 'left']):
-            if not any(w in doc_lower for w in ['remove', 'delete', 'manage', 'admin', 'settings']):
+        # 2. Update/Change vs View/Download Check
+        if any(w in issue_lower for w in ['update', 'change', 'edit', 'modify', 'incorrect', 'fix', 'correct']):
+            if not any(w in doc_lower for w in ['update', 'change', 'edit', 'modify', 'settings', 'fix', 'correct', 'regenerate']):
+                return False 
+                
+        # 3. Access/Login/Seat Check
+        if any(w in issue_lower for w in ['access', 'login', 'permission', 'seat', 'remove', 'add', 'restore']):
+            if not any(w in doc_lower for w in ['access', 'permission', 'login', 'credentials', 'reset', 'manage', 'user', 'member', 'restore', 'reactivate']):
+                return False
+
+        # 4. UI/Navigation Check (The "Apply Tab" case)
+        if any(w in issue_lower for w in ['tab', 'button', 'link', 'menu', 'navigation', 'where is', 'cannot see', 'missing']):
+            if not any(w in doc_lower for w in ['tab', 'button', 'menu', 'sidebar', 'header', 'click', 'navigate', 'locate']):
+                return False
+        
+        # 5. Refund/Billing Check (The "Refund" case)
+        if any(w in issue_lower for w in ['refund', 'money back', 'reimbursement', 'chargeback']):
+            if not any(w in doc_lower for w in ['refund', 'billing', 'transaction', 'reimburse', 'payment', 'money', 'cancel']):
                 return False
                 
         return True
@@ -472,7 +478,13 @@ class DecisionAgent:
         issue_preview = issue.strip().split('\n')[0][:50]
         if len(issue_preview) > 47: issue_preview += "..."
         
-        return f"Based on our documentation regarding your request ('{issue_preview}'): {base_response}"
+        synthesized = f"Based on our documentation regarding your request ('{issue_preview}'): {base_response}"
+        
+        # FIX: Remove cliffhangers (e.g. ending in "1." or "to:")
+        synthesized = re.sub(r'[\d\.]+$', '', synthesized).strip()
+        synthesized = re.sub(r'[:]$', '.', synthesized).strip()
+        
+        return synthesized
 
     def _extract_useful_sentences(self, text: str) -> list[str]:
         """Extract action-oriented and informative sentences from corpus text."""
@@ -501,36 +513,31 @@ class DecisionAgent:
         """Create a personalized escalation message without internal metrics."""
         issue_lower = issue.lower()
         
-        # Personalized messages based on intent
-        personalization = {
-            'pause': ('I can assist you with your request to pause your subscription. Our billing team will review your account status and send you a confirmation within 24 hours.',
-                     'subscription_pause'),
-            'subscription': ('Regarding your subscription inquiry, a billing specialist will reach out within 24 hours to assist with your specific plan.',
-                           'billing_support'),
-            'resume builder': ('Our Resume Builder tool is currently undergoing technical review. A support specialist will follow up with you within 2 hours to help resolve any issues.',
-                             'resume_builder_support'),
-            'remove': ('I can help you with your request to manage your account users and employees. A member of our account management team will contact you within 24 hours to process this change.',
-                      'account_management_support'),
-            'employee': ('Regarding your employee management request, an account specialist will reach out within 24 hours to help update your team settings.',
-                        'employee_management'),
-            'interviewer': ('I can assist you with managing your interviewer list. A specialist will help you update these permissions within 24 hours.',
-                           'interviewer_management'),
-            'certificate': ('To ensure your certificate name is updated accurately, a specialist will review your request and process the correction within 24 hours.',
-                           'certificate_support'),
-            'lti': ('LTI key integration requires specialized technical setup. Our integrations team will contact you within 24 hours with the necessary credentials.',
-                   'integration_support'),
-            'bedrock': ('For AWS Bedrock and API-level technical support, our engineering team will review your configuration and respond within 2 hours.',
-                       'api_support'),
-            'visa': ('For security and travel-related card inquiries, our card services team will follow up within 4 hours to ensure your account is protected.',
-                    'visa_security_support'),
-        }
+        # Personalized messages based on intent - STRICT PRIORITY ORDER
+        # Note: Longer/more specific keys should come first to avoid cross-contamination
+        personalization = [
+            ('bedrock', 'For AWS Bedrock and API-level technical support, our engineering team will review your configuration and respond within 2 hours.', 'api_support'),
+            ('lti', 'LTI key integration requires specialized technical setup. Our integrations team will contact you within 24 hours with the necessary credentials.', 'integration_support'),
+            ('pause', 'I can assist you with your request to pause your subscription. Our billing team will review your account status and send you a confirmation within 24 hours.', 'subscription_pause'),
+            ('timeout', 'Regarding your query about candidate inactivity or lobby timeouts, a technical specialist will review your assessment settings and follow up within 24 hours.', 'assessment_support'),
+            ('lobby', 'A technical specialist will review your lobby timeout settings and follow up within 24 hours.', 'assessment_support'),
+            ('resume builder', 'Our Resume Builder tool is currently undergoing technical review. A support specialist will follow up with you within 2 hours to help resolve any issues.', 'resume_builder_support'),
+            ('remove', 'I can help you manage your account users and employees. A member of our account management team will contact you within 24 hours to process this change.', 'account_management_support'),
+            ('employee', 'An account specialist will reach out within 24 hours to help update your employee and team settings.', 'employee_management'),
+            ('interviewer', 'I can assist you with managing your interviewer list. A specialist will help you update these permissions within 24 hours.', 'interviewer_management'),
+            ('certificate', 'To ensure your certificate name is updated accurately, a specialist will review your request and process the correction within 24 hours.', 'certificate_support'),
+            ('refund', 'Regarding your refund request, a billing specialist will review the transaction details and follow up within 24 hours.', 'billing_support'),
+            ('visa', 'For security and travel-related card inquiries, our card services team will follow up within 4 hours to ensure your account is protected.', 'visa_security_support'),
+            ('claude has stopped', 'I understand that Claude is currently unresponsive. A member of our systems team will investigate this service report and follow up within 2 hours.', 'outage_support'),
+            ('seat', 'Regarding your access restoration and seat removal, an account specialist will investigate your admin settings and follow up within 24 hours.', 'account_management_support'),
+        ]
         
         default_msg = "Thank you for contacting us. A specialist will review your request and follow up within 24 hours."
         default_reason = 'standard_support'
         
         response_msg = default_msg
         reason_key = default_reason
-        for keyword, (msg, key) in personalization.items():
+        for keyword, msg, key in personalization:
             if keyword in issue_lower:
                 response_msg = msg
                 reason_key = key

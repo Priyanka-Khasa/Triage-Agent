@@ -5,7 +5,7 @@ Sample Source: sample_support_tickets.csv
 Total Tickets: 10
 
 METRICS:
-  Status Accuracy:       60.0%
+  Status Accuracy:       50.0%
   Request Type Accuracy: 100.0%
   Product Area Match:    50.0%
 
@@ -16,6 +16,10 @@ Row 1: Test Active in the system
 
 Row 3: When should I create a variant versus
  have a different test?
+  [Status] Expected: 'replied', Predicted: 'escalated'
+
+Row 4: How to reinvite candidate to Hackerrank 
+assessment and add extra time
   [Status] Expected: 'replied', Predicted: 'escalated'
 
 Row 5: nan
